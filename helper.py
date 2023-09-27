@@ -45,3 +45,15 @@ def save_dict2json(dictionary, file_name = "file.json"):
     file_path = os.path.join(PREPROCESSED_DATA_PTH, file_name)
     with open(file_path, "w") as outfile:
         json.dump(dictionary, outfile)
+
+def get_one_to_many_similarity_scores(to_compare: dict, compare_with: dict):
+    similarity_scores = {}
+    file_to_compare = list(to_compare.keys())[0]
+    for file in compare_with:
+        score_matrix = cosine_document_similarity(to_compare[file_to_compare], compare_with[file])
+        similarity_scores[file] = round(score_matrix[0][1], 2)
+
+    similarity_scores = sorted(similarity_scores.items(), key=lambda x: x[1], reverse=True)
+    return similarity_scores[0]
+
+
